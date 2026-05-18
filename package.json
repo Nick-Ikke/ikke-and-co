@@ -1,0 +1,23 @@
+{
+  "name": "ikke-and-co-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified multi-service pet ecosystem for IKKE & Co.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev -w apps/client",
+    "dev:vet": "npm run dev -w apps/vet-dashboard",
+    "dev:admin": "npm run dev -w apps/admin-panel",
+    "build": "npm run build --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "db:generate": "npm run generate -w packages/database",
+    "db:push": "npm run push -w packages/database"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  }
+}

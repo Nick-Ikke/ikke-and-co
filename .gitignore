@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build outputs
+.next/
+out/
+
+# Production builds
+dist/
+build/
+
+# IDE / Operating System
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Local Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Prisma local artifacts
+/packages/database/prisma/dev.db
+/packages/database/prisma/dev.db-journal
