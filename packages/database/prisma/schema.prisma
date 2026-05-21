@@ -1,0 +1,126 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+enum UserRole {
+  CLIENT
+  VET
+  ADMIN
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  role      UserRole @default(CLIENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  pets         Pet[]
+  appointments Appointment[] @relation("VetAppointments") // For Vet profiles
+  orders       Order[]
+}
+
+model Pet {
+  id        String   @id @default(uuid())
+  name      String
+  species   String
+  breed     String?
+  birthdate DateTime
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+  medicalNotes MedicalNote[]
+}
+
+model Appointment {
+  id        String            @id @default(uuid())
+  petId     String
+  vetId     String
+  dateTime  DateTime
+  status    AppointmentStatus @default(PENDING)
+  reason    String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  // Relations
+  pet  Pet  @relation(fields: [petId], references: [id], onDelete: Cascade)
+  vet  User @relation("VetAppointments", fields: [vetId], references: [id])
+}
+
+model MedicalNote {
+  id        String   @id @default(uuid())
+  petId     String
+  vetId     String
+  diagnosis String
+  treatment String
+  notes     String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  sku         String   @unique
+  name        String
+  description String
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  orderItems OrderItem[]
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  userId    String
+  status    OrderStatus @default(PENDING)
+  total     Decimal     @db.Decimal(10, 2)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Relations
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Decimal  @db.Decimal(10, 2)
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
