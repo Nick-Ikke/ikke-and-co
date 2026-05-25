@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  /* System Brand Colors */
+  --color-cream: #FFF8E7;
+  --color-sage: #59915C;
+  --color-industrial-grey: #545454;
+  --color-industrial-black: #0A0700;
+
+  /* Structural Variables */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  html, body {
+    background-color: var(--color-cream);
+    color: var(--color-industrial-black);
+    font-family: var(--font-mono);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* Fluid Header Clamping Matrix */
+  h1 {
+    font-size: clamp(2.5rem, 8vw + 1rem, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 5vw + 1rem, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+}
+
+/* Structural Grid Linework Utilites */
+.industrial-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(84, 84, 84, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(84, 84, 84, 0.05) 1px, transparent 1px);
+}
